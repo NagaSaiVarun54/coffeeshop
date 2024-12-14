@@ -54,13 +54,12 @@ public class CartService {
 
     private String generateReceiptText() {
         StringBuilder receipt = new StringBuilder("Charlene's Coffee Corner\n");
-        receipt.append("------------------------------\n");
+        receipt.append("----------------------------");
 
         for (Product product : cart) {
             receipt.append(product.getName())
                     .append(" - CHF ")
-                    .append(String.format("%.2f", product.getPrice()))
-                    .append("\n");
+                    .append(String.format("%.2f", product.getPrice()));
         }
 
         receipt.append("------------------------------");
