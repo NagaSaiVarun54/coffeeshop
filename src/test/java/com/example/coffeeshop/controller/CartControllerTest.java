@@ -42,7 +42,6 @@ public class CartControllerTest {
         CartRequest cartRequest = new CartRequest();
         cartRequest.setProducts(List.of("Small Coffee", "Bacon Roll", "Medium Coffee", "Large Coffee", "Small Coffee"));
 
-        // Act
         MvcResult result = mockMvc.perform(post("/api/cart/add")
                         .contentType("application/json")
                         .content("{\"products\":[\"Small Coffee\", \"Bacon Roll\", \"Medium Coffee\", \"Large Coffee\", \"Small Coffee\"]}"))
@@ -50,19 +49,15 @@ public class CartControllerTest {
                 .andExpect(content().string("Products added to cart."))
                 .andReturn();
 
-        // Verify the interaction with the service for the 5th beverage logic
         verify(cartService, times(5)).addProduct(anyString());
     }
 
     @Test
     public void testGetReceipt() throws Exception {
-        // Creating a mock receipt with a free beverage scenario
         ReceiptResponse receiptResponse = new ReceiptResponse("Charlene's Coffee Corner\nSmall Coffee - CHF 2.50\n", 2.50);
-        System.out.println(receiptResponse);
-        // Mock service response
+
         when(cartService.getReceipt()).thenReturn(receiptResponse);
 
-        // Act & Assert
         mockMvc.perform(get("/api/cart/receipt"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalPrice").value(2.50))
@@ -71,13 +66,11 @@ public class CartControllerTest {
 
     @Test
     public void testClearCart() throws Exception {
-        // Act
         MvcResult result = mockMvc.perform(post("/api/cart/clear"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Cart cleared."))
                 .andReturn();
 
-        // Verify the interaction with the service
         verify(cartService, times(1)).clearCart();
     }
 }
